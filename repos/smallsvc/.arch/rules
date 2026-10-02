@@ -1,0 +1,28 @@
+# Dependency rules, the `arch init` template (ADR 6): subject · must not · targets · level.
+# Shape is provisional until `arch` publishes its schema — see FINDINGS.md F-2.
+
+[[rule]]
+subject = "domain"
+must_not = "depend-on"
+targets = ["driving", "driven"]
+level = "block"
+
+[[rule]]
+subject = "driving"
+must_not = "depend-on"
+targets = ["externals"]
+level = "block"
+
+[[rule]]
+subject = "domain"
+must_not = "depend-on"
+targets = ["externals"]
+level = "block"
+
+[lints]
+# "five lints on" per ADR 6; names provisional (FINDINGS.md F-2)
+direction = "warn"
+unresolved = "warn"
+facade = "warn"
+dead-port = "warn"
+queue-table = "warn"
