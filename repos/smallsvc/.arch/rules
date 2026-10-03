@@ -1,5 +1,5 @@
 # Dependency rules, the `arch init` template (ADR 6): subject · must not · targets · level.
-# Shape is provisional until `arch` publishes its schema — see FINDINGS.md F-2.
+# Shape accepted as schema version 0 — tau-rs/arch-design#4, tau-rs/arch#13.
 
 [[rule]]
 subject = "domain"
@@ -20,9 +20,9 @@ targets = ["externals"]
 level = "block"
 
 [lints]
-# "five lints on" per ADR 6; names provisional (FINDINGS.md F-2)
-direction = "warn"
-unresolved = "warn"
-facade = "warn"
-dead-port = "warn"
-queue-table = "warn"
+# "five lints on" per ADR 6; names as the design pages print them (tau-rs/arch-design#4, tau-rs/arch#13)
+god-module = "warn"
+cycle = "warn"
+leaky-port = "warn"
+speculative-abstraction = "warn"
+unresolved-dyn = "warn"
