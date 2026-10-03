@@ -8,8 +8,8 @@
 #   rust_lines    lines in those files
 #   decls         syntactic item declarations (fn · struct · enum · trait · type · const · static · mod · union ·
 #                 macro_rules) in *.rs outside target/, tests/, benches/, examples/. This is an upper bound on
-#                 arch's `items` (it includes #[cfg(test)] modules and non-unit crates); `items` and `links` stay
-#                 null until arch-analyze fills them.
+#                 arch's `items` (it includes #[cfg(test)] modules and non-unit crates); `items` and `links` are
+#                 counted from golden/<repo>/facts.json, null until arch-analyze has produced it.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -33,6 +33,11 @@ measure() {
   done
   local commit_json="\"$commit\""
   [ "$name" = smallsvc ] && commit_json=null
+  # items and links are read from the golden facts once arch-analyze has produced them.
+  local items=null links=null
+  if [ -f "golden/$name/facts.json" ]; then
+    read -r items links < <(python3 -c 'import json,sys; f=json.load(open(sys.argv[1])); print(len(f.get("items",[])), len(f.get("links",[])))' "golden/$name/facts.json")
+  fi
   mkdir -p "golden/$name"
   cat > "golden/$name/sizes.json" <<JSON
 {
@@ -45,8 +50,8 @@ measure() {
   "rust_lines": $lines,
   "decls": $decls,
   "decls_by_kind": { $by_kind },
-  "items": null,
-  "links": null,
+  "items": $items,
+  "links": $links,
   "notes": "crates from cargo metadata --no-deps; decls is a syntactic upper bound on items (see script header; fn includes methods); items and links are filled by arch-analyze; smallsvc is in-tree so its commit is this repo's"
 }
 JSON

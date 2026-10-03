@@ -8,7 +8,7 @@
   "rust_lines": 1951,
   "decls": 237,
   "decls_by_kind": { "fn": 129, "struct": 53, "enum": 17, "trait": 5, "type": 0, "const": 3, "static": 0, "mod": 31 },
-  "items": null,
-  "links": null,
+  "items": 286,
+  "links": 981,
   "notes": "crates from cargo metadata --no-deps; decls is a syntactic upper bound on items (see script header; fn includes methods); items and links are filled by arch-analyze; smallsvc is in-tree so its commit is this repo's"
 }
