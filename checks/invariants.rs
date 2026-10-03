@@ -743,6 +743,8 @@ pub fn input_from_facts(doc: &serde_json::Value) -> Input {
             Item {
                 krate: text(i, "crate"),
                 column: None,
+                // Areas come from `views/`, not from facts.
+                area: None,
                 // Public surface: pub items, pub use, registered routes (the framework-held entries).
                 public: text(i, "visibility") == "pub" || reexported || entries.contains(&id),
                 // The facts that place an item are the item's own; its serialization stands for them.
@@ -763,7 +765,7 @@ pub fn input_from_facts(doc: &serde_json::Value) -> Input {
                 "declared" => Confidence::Declared,
                 _ => Confidence::Guessed,
             };
-            Some(Link { id: format!("{from} -{kind}{member}-> {to}"), from, to, confidence, unresolved: None })
+            Some(Link { id: format!("{from} -{kind}{member}-> {to}"), from, to, kind, confidence, unresolved: None })
         })
         .collect();
     Input { items, links, ..Input::default() }
