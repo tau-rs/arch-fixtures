@@ -5330,21 +5330,6 @@
     {
       "from": "orderly::adapters::email::impl Notifier for LogNotifier::send#fn",
       "to": {
-        "external": "external:tty:log"
-      },
-      "kind": "calls-out",
-      "confidence": "guessed",
-      "witness": {
-        "kind": "span",
-        "file": "src/adapters/email/mod.rs",
-        "line": 61,
-        "col": 9
-      },
-      "reason": "`tracing::info!` writes to the process log"
-    },
-    {
-      "from": "orderly::adapters::email::impl Notifier for LogNotifier::send#fn",
-      "to": {
         "item": "orderly::domain::notification::Notification#struct"
       },
       "member": "subject",
@@ -12885,21 +12870,6 @@
     {
       "from": "orderly::app::notify::impl NotifyCustomer::drain#fn",
       "to": {
-        "external": "external:tty:log"
-      },
-      "kind": "calls-out",
-      "confidence": "guessed",
-      "witness": {
-        "kind": "span",
-        "file": "src/app/notify.rs",
-        "line": 41,
-        "col": 21
-      },
-      "reason": "`tracing::warn!` writes to the process log"
-    },
-    {
-      "from": "orderly::app::notify::impl NotifyCustomer::drain#fn",
-      "to": {
         "item": "orderly::app::AppError#enum"
       },
       "kind": "uses-type",
@@ -13689,21 +13659,6 @@
       "flags": {
         "compile_time": true
       }
-    },
-    {
-      "from": "orderly::app::place::impl PlaceOrder::run#fn",
-      "to": {
-        "external": "external:tty:log"
-      },
-      "kind": "calls-out",
-      "confidence": "guessed",
-      "witness": {
-        "kind": "span",
-        "file": "src/app/place.rs",
-        "line": 25,
-        "col": 9
-      },
-      "reason": "`tracing::info!` writes to the process log"
     },
     {
       "from": "orderly::app::place::impl PlaceOrder::run#fn",
@@ -19264,21 +19219,6 @@
     {
       "from": "orderly::worker::run_outbox_worker#fn",
       "to": {
-        "external": "external:tty:log"
-      },
-      "kind": "calls-out",
-      "confidence": "guessed",
-      "witness": {
-        "kind": "span",
-        "file": "src/worker.rs",
-        "line": 29,
-        "col": 25
-      },
-      "reason": "`tracing::info!` writes to the process log"
-    },
-    {
-      "from": "orderly::worker::run_outbox_worker#fn",
-      "to": {
         "item": "orderly::app::Services#struct"
       },
       "member": "notify",
@@ -19531,21 +19471,6 @@
         "line": 19,
         "col": 25
       }
-    },
-    {
-      "from": "orderly[bin:orderly]::main#fn",
-      "to": {
-        "external": "external:tty:log"
-      },
-      "kind": "calls-out",
-      "confidence": "guessed",
-      "witness": {
-        "kind": "span",
-        "file": "src/main.rs",
-        "line": 41,
-        "col": 5
-      },
-      "reason": "`tracing::info!` writes to the process log"
     },
     {
       "from": "orderly[bin:orderly]::main#fn",
@@ -20142,20 +20067,6 @@
         "file": "Cargo.toml",
         "line": 24
       }
-    },
-    {
-      "id": "port:tty:log",
-      "kind": "tty",
-      "name": "log",
-      "side": "driven",
-      "section": "os",
-      "external": "external:tty:log",
-      "witness": {
-        "kind": "span",
-        "file": "src/worker.rs",
-        "line": 29,
-        "col": 25
-      }
     }
   ],
   "externals": [
@@ -20517,17 +20428,6 @@
         "kind": "declared",
         "file": "Cargo.toml",
         "line": 24
-      }
-    },
-    {
-      "id": "external:tty:log",
-      "name": "log",
-      "kind": "tty",
-      "witness": {
-        "kind": "span",
-        "file": "src/worker.rs",
-        "line": 29,
-        "col": 25
       }
     }
   ],
