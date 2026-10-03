@@ -1,7 +1,8 @@
 //! Runs the harness over every `golden/<repo>/` directory.
 //!
-//! While no golden data exists each repo reports "awaiting data" and the test passes. The moment a
-//! `facts.json` lands, this test fails until `load_golden` maps arch's schema onto `Input` — on purpose.
+//! A repo with no golden data reports "awaiting data" and passes. A repo with a `facts.json` is loaded
+//! through `load_golden` and must satisfy every invariant that facts alone can decide; the ones that
+//! read views hold trivially until `views/` exists.
 
 use std::path::PathBuf;
 
