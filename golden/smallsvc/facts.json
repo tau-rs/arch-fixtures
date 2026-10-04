@@ -1,8 +1,8 @@
 {
-  "schema_version": 0,
+  "schema_version": 1,
   "repo": {
     "name": "smallsvc",
-    "commit": "a6080874b4b9f681ecbdc416dd0d6d54a0b60862",
+    "commit": "ff41a0de9ec0bf6878c46b118b025f50cd30c373",
     "unit": {
       "id": "unit:smallsvc",
       "main_target": "bin:orderly"
@@ -10,7 +10,9 @@
   },
   "analyzer": {
     "name": "arch-analyze",
-    "version": "0.1.0+ra_ap_0.0.356"
+    "version": "0.1.0+ra_ap_0.0.356",
+    "target": "x86_64-unknown-linux-gnu",
+    "target_pinned": true
   },
   "crates": [
     {
