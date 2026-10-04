@@ -275,8 +275,8 @@ impl fmt::Display for Report {
 pub const FOLD_ITEM_THRESHOLD: usize = 80;
 /// The fold keeps the footprint with a floor at this fraction of the opening scale (MAP-4 amended).
 pub const FOLD_SCALE_FLOOR: f64 = 0.7;
-/// The link kinds that carry a direction (ADR 0025 decision 1).
-pub const CALL_FAMILY: [&str; 5] = ["calls", "calls out", "hands off", "listens to", "routes"];
+/// The link kinds that carry a direction, spelled as the schema spells them (ADR 0025 decision 1, ADR 0033).
+pub const DIRECTED_KINDS: [&str; 5] = ["calls", "calls-out", "hands-off", "listens-to", "routes"];
 /// The hexagon's item columns; the grain points toward `domain` (ADR 0025 decision 3).
 pub const HEXAGON_SIDES: [&str; 3] = ["driving", "domain", "driven"];
 /// The hexagon's rail column: it holds ports, never items (MAP-31).
@@ -456,9 +456,9 @@ pub fn cross_unit_on_public_surface(input: &Input) -> Vec<Violation> {
         .collect()
 }
 
-/// MAP-17 (ADR 0025) · A call-family link against the grain of the unit's column rule is drawn dashed as a
+/// MAP-17 (ADR 0025) · A directed link against the grain of the unit's column rule is drawn dashed as a
 /// smell; no other link kind carries a direction. Testable: for every resolved link of a kind in
-/// [`CALL_FAMILY`] between two items that both have an item column, if the link runs against the grain a
+/// [`DIRECTED_KINDS`] between two items that both have an item column, if the link runs against the grain a
 /// `direction` finding names it. Layers: against = to a left-hand column. Hexagon: with the grain = driving →
 /// domain or driven → domain; any other move between two of driving · domain · driven is against. A link
 /// inside one column, or with an endpoint outside the item columns (the rail, the crate root), has no direction.
@@ -480,7 +480,7 @@ pub fn direction_left_to_right(input: &Input) -> Vec<Violation> {
         ColumnRule::Hexagon => from != to && !(to == "domain" && (from == "driving" || from == "driven")),
     };
     let mut out = Vec::new();
-    for l in input.links.iter().filter(|l| l.unresolved.is_none() && CALL_FAMILY.contains(&l.kind.as_str())) {
+    for l in input.links.iter().filter(|l| l.unresolved.is_none() && DIRECTED_KINDS.contains(&l.kind.as_str())) {
         let (Some(cf), Some(ct)) = (item_column(&l.from), item_column(&l.to)) else { continue };
         if against(cf, ct) && !smells.contains_key(l.id.as_str()) {
             out.push(viol("MAP-17", format!("{} link {} goes {cf} → {ct}, against the {rule:?} grain, and no direction finding marks it", l.kind, l.id)));
@@ -944,16 +944,22 @@ mod tests {
     }
 
     #[test]
-    fn only_the_call_family_carries_direction() {
+    fn only_the_directed_kinds_carry_direction() {
+        // Literals, not the constant: a misspelled kind in the constant must fail here (ADR 0033 "Spelling").
         let mut i = hexagon();
-        for (n, k) in ["implements", "uses type", "constructs", "wires", "calls port"].into_iter().enumerate() {
+        for (n, k) in ["implements", "uses-type", "constructs", "wires", "calls-port", "depends-on-port"].into_iter().enumerate() {
             i.links.push(kind(link(&format!("k{n}"), "d", "a", Confidence::Resolved), k));
         }
         assert!(direction_left_to_right(&i).is_empty());
-        for (n, k) in CALL_FAMILY.into_iter().enumerate() {
+        let directed = ["calls", "calls-out", "hands-off", "listens-to", "routes"];
+        for (n, k) in directed.into_iter().enumerate() {
             i.links.push(kind(link(&format!("c{n}"), "d", "a", Confidence::Resolved), k));
         }
-        assert_eq!(direction_left_to_right(&i).len(), CALL_FAMILY.len());
+        let flagged: Vec<String> = direction_left_to_right(&i).into_iter().map(|v| v.message).collect();
+        for k in directed {
+            assert!(flagged.iter().any(|d| d.starts_with(&format!("{k} link "))), "{k} against the grain not flagged: {flagged:?}");
+        }
+        assert_eq!(flagged.len(), directed.len(), "{flagged:?}");
     }
 
     #[test]
