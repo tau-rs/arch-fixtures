@@ -2,7 +2,7 @@
   "schema_version": 0,
   "repo": {
     "name": "smallsvc",
-    "commit": "42c5699f836c83b4f68090c33586910ffc8c21db",
+    "commit": "a6080874b4b9f681ecbdc416dd0d6d54a0b60862",
     "unit": {
       "id": "unit:smallsvc",
       "main_target": "bin:orderly"
