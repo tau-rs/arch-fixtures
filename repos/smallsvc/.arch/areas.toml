@@ -2,6 +2,9 @@
 # the main bin, and the side of each top-level area.
 rule = "hexagon"
 main_bin = "orderly"
+# One map on every machine (ADR 0030): analyse for Linux, CI's platform, wherever arch runs.
+# On another platform: rustup target add x86_64-unknown-linux-gnu.
+target = "x86_64-unknown-linux-gnu"
 
 [[area]]
 name = "http"
