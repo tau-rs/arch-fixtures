@@ -25,7 +25,6 @@ rows below are what the map shows after the first index.
 | areas · driven | `postgres` · `memory` · `stripe` · `carrier` · `email` | by construction |
 | externals · data stores | `postgres` (sql) via `sqlx` — tables `orders` `order_lines` `payments` `shipments` `outbox` | by construction (`migrations/`) |
 | externals · third-party | `api.stripe.com` (http) · carrier api (http) · mail api (http) | by construction |
-| externals · os | `tty` (process log, `LogNotifier`) | by construction |
 | entries | `main` (framework-held: axum) · outbox worker loop (`worker::run_outbox_worker`) | by construction |
 | routes → handlers | 5: `GET /health` · `POST /orders` · `GET /orders/:id` · `POST /orders/:id/pay` · `POST /orders/:id/ship`; middleware stack `TraceLayer → request_id → require_api_key` (health skips the key) | by construction (`adapters/http/mod.rs`) |
 | ports | `OrderRepository` (2 adapters) · `Outbox` (2) · `Notifier` (2) · `PaymentGateway` (1) · `ShippingProvider` (1) | by construction |
